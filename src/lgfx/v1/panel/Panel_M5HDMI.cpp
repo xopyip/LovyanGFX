@@ -305,18 +305,18 @@ namespace lgfx
 
 //----------------------------------------------------------------------------
 
-  std::uint8_t Panel_M5HDMI::HDMI_Trans::readRegister(std::uint8_t register_address)
+  uint8_t Panel_M5HDMI::HDMI_Trans::readRegister(uint8_t register_address)
   {
-    std::uint8_t buffer;
+    uint8_t buffer;
     lgfx::i2c::transactionWriteRead(this->HDMI_Trans_config.i2c_port, this->HDMI_Trans_config.i2c_addr, &register_address, 1, &buffer, 1, this->HDMI_Trans_config.freq_read);
     return buffer;
   }
 
-  std::uint16_t Panel_M5HDMI::HDMI_Trans::readRegister16(std::uint8_t register_address)
+  uint16_t Panel_M5HDMI::HDMI_Trans::readRegister16(uint8_t register_address)
   {
-    std::uint8_t buffer[2];
+    uint8_t buffer[2];
     lgfx::i2c::transactionWriteRead(this->HDMI_Trans_config.i2c_port, this->HDMI_Trans_config.i2c_addr, &register_address, 1, buffer, 2, this->HDMI_Trans_config.freq_read);
-    return (static_cast<std::uint16_t>(buffer[0]) << 8) | buffer[1];
+    return (static_cast<uint16_t>(buffer[0]) << 8) | buffer[1];
   }
 
   bool Panel_M5HDMI::HDMI_Trans::writeRegister(uint8_t register_address, uint8_t value)

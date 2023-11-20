@@ -213,7 +213,7 @@ namespace lgfx
     // SOC_GDMA_TRIG_PERIPH_SPI3
     // SOC_GDMA_TRIG_PERIPH_LCD0
     // GDMAペリフェラルレジスタの配列を順に調べてペリフェラル番号が一致するDMAチャンネルを特定する;
-    for (int i = 0; i < SOC_GDMA_PAIRS_PER_GROUP; ++i)
+    for (int i = 0; i < SOC_GDMA_PAIRS_PER_GROUP_MAX; ++i)
     {
 // ESP_LOGD("DBG","GDMA.channel:%d peri_sel:%d", i, GDMA.channel[i].out.peri_sel.sel);
       if ((*reg(DMA_OUT_PERI_SEL_CH0_REG + i * sizeof(GDMA.channel[0])) & 0x3F) == peripheral_select)
@@ -234,7 +234,7 @@ namespace lgfx
     // SOC_GDMA_TRIG_PERIPH_SPI3
     // SOC_GDMA_TRIG_PERIPH_LCD0
     // GDMAペリフェラルレジスタの配列を順に調べてペリフェラル番号が一致するDMAチャンネルを特定する;
-    for (int i = 0; i < SOC_GDMA_PAIRS_PER_GROUP; ++i)
+    for (int i = 0; i < SOC_GDMA_PAIRS_PER_GROUP_MAX; ++i)
     {
 // ESP_LOGD("DBG","GDMA.channel:%d peri_sel:%d", i, GDMA.channel[i].out.peri_sel.sel);
       if ((*reg(DMA_IN_PERI_SEL_CH0_REG + i * sizeof(GDMA.channel[0])) & 0x3F) == peripheral_select)
@@ -484,7 +484,7 @@ namespace lgfx
         buscfg.intr_flags = 0;
 #if defined (ESP_IDF_VERSION_VAL)
  #if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 1, 0))
-        buscfg.isr_cpu_id = INTR_CPU_ID_AUTO;
+        buscfg.isr_cpu_id = ESP_INTR_CPU_AFFINITY_AUTO;
  #endif
 #endif
         if (ESP_OK != spi_bus_initialize(static_cast<spi_host_device_t>(spi_host), &buscfg, dma_channel))
@@ -823,7 +823,8 @@ namespace lgfx
       }
 #if defined (CONFIG_IDF_TARGET_ESP32S3)
  #if (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 3) && ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 1, 0)) \
-  || (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 1, 1) && ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0))
+  || (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 1, 1) && ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 2, 0)) \
+  || (ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 3, 0) && ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 4, 0))
       (&dev->comd[0])[index].val = cmd_val;
  #else
       (&dev->comd0)[index].val = cmd_val;
